@@ -38,7 +38,7 @@ app.use(bodyParser.json());
 
 const port = process.env.PORT || 3000;
 
-var whitelist = ["https://coronasupport.house/", "http://localhost:8000"];
+var whitelist = ["https://coronasupport.house", "http://localhost:8000"];
 var corsOptions = {
   origin: function(origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
