@@ -9,11 +9,24 @@ const authToken = process.env.AUTHTOKEN;
 const client = require("twilio")(accountSid, authToken);
 const express = require("express");
 var bodyParser = require("body-parser");
+var cors = require("cors");
 
 const app = express();
 app.use(bodyParser.json());
 
 const port = process.env.PORT || 3000;
+
+var whitelist = ["https://coronasupport.house/", "http://localhost:8000"];
+var corsOptions = {
+  origin: function(origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  }
+};
+app.use(cors(corsOptions));
 
 app.get("/", (req, res) => res.send("Hello World!"));
 
