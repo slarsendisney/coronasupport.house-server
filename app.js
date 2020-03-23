@@ -40,7 +40,6 @@ app.post("/send", (req, res) => {
       to: "+447926147958"
     })
     .then(() => res.send("OK"));
-  //res.send({ message });
 });
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
