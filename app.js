@@ -21,7 +21,11 @@ db.collection("volunteers").onSnapshot(subCollectionSnapshot => {
   let numbers = [];
   let vols = [];
   subCollectionSnapshot.forEach(subDoc => {
-    if (subDoc.data().phone_number && !subDoc.data().text_opt_out) {
+    if (
+      subDoc.data().phone_number &&
+      !subDoc.data().text_opt_out &&
+      subDoc.data().type === "volunteer"
+    ) {
       numbers.push(subDoc.data().phone_number);
     }
     vols.push(subDoc.data());
