@@ -16,15 +16,20 @@ firebase.initializeApp({
 
 var db = firebase.firestore();
 let phoneNumbers = [];
+let volunteers = [];
 db.collection("volunteers").onSnapshot(subCollectionSnapshot => {
   let numbers = [];
+  let vols = [];
   subCollectionSnapshot.forEach(subDoc => {
-    if (subDoc.data().phone_number) {
+    if (subDoc.data().phone_number && !subDoc.data().text_opt_out) {
       numbers.push(subDoc.data().phone_number);
     }
+    vols.push(subDoc.data());
   });
+  volunteers = vols;
   phoneNumbers = numbers;
 });
+
 const accountSid = process.env.ACCOUNTSID;
 const authToken = process.env.AUTHTOKEN;
 
@@ -38,7 +43,7 @@ app.use(bodyParser.json());
 
 const port = process.env.PORT || 3000;
 
-var whitelist = ["https://coronasupport.house", "http://localhost:8000"];
+var whitelist = ["https://coronasupport.house/", "http://localhost:8000"];
 var corsOptions = {
   origin: function(origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
@@ -50,7 +55,20 @@ var corsOptions = {
 };
 app.use(cors(corsOptions));
 
-app.get("/", (req, res) => res.send("Hello World!"));
+app.get("/", (req, res) => {
+  // volunteers.forEach(data => {
+  //   // console.log("volunteers");
+  //   firebase
+  //     .firestore()
+  //     .collection("users")
+  //     .doc(data.uid)
+  //     .set({
+  //       type: "volunteer",
+  //       ...data
+  //     });
+  // });
+  res.send("Hello World!");
+});
 
 app.post("/send", (req, res) => {
   const name = req.body.name;
